@@ -2,7 +2,7 @@
 // Solution: Add interactivity so that use can manage daily tasks
 
 var taskInput =  $('#new-task') //new-task document.getElementById("new-task")
-var addButton = document.getElementsByTagName('button')[0] //first button
+var addButton = $('#add') //first button document.getElementsByTagName('button')[0]
 var incompleteTasksHolder = $('#incomplete-tasks') //incomplete-tasks  Document.getElementById("incomplete-tasks")
 var completedTasksHolder = $('#completed-tasks')  //completed-tasks document.getElementById("completed-tasks")
 
@@ -47,11 +47,40 @@ var taskCompleted = function ( ){
 }
 
 //Mark a task as incomplete
-var taskIncomplete = function ( ){
+var taskInComplete = function ( ){
      console.log('inCompleted task..')
      //When the checkbox is unchecked
           //Append the task list item to the #incompleted-task
 }
 
+var bindTaskEvents = function(taskListItem, checkBoxEventHandler) {
+    console.log("Bind list events");
+    // select taskListItem's children
+    var checkBox = taskListItem.querySelector("input[type=checkbox]");  //$('.checkbox');; edit needed a space between input and [] //////
+    var editButton = taskListItem.querySelector("button.edit");  //$('.edit');//
+    var deleteButton = taskListItem.querySelector("button.delete");  //$('.delete');//
+
+    // bind editTask to editButton
+    editButton.onclick = editTask;
+
+    //  bind deleteTask to deleteButton;
+    deleteButton.onclick = deleteTask;
+
+    // bind checkBoxEventHandler to checkbox
+    checkBox.onchange = checkBoxEventHandler;
+}
 
 //Set the click handler to the addTask function
+addButton.onclick = addTask;
+
+
+// cycle over incompleteTaskHolder ul list item
+for(var i = 0; i < incompleteTasksHolder.children.length; i++) {
+  //  bind events to list item's children (taskcompleted)
+  bindTaskEvents(incompleteTasksHolder .children[i], taskCompleted);
+}
+// cycle over completeTaskHolder ul list item
+for(var i = 0; i < incompleteTasksHolder.children.length; i++) {
+  //    bind events to list item's children (taskincomplete)
+  bindTaskEvents(completedTasksHolder.children[i], taskInComplete);
+}
